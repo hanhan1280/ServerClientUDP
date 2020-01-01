@@ -5,19 +5,13 @@
  */
 package Network;
 
-import GameEngine.Entity;
-import GameEngine.GameName;
 import GameEngine.GameWindow;
 import GameEngine.Player;
 import Graphics.Spritesheet;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.*;
 import java.util.ArrayList;
-import java.util.UUID;
 
 /**
  * @author hanan
@@ -74,7 +68,7 @@ public class Server implements Runnable{
             }
             else{
                 sendData(packet.getData(),player.inetAddress,player.port);
-                packet = new LoginPacket(player.getUsername(),player.xPos,player.yPos);
+                packet = new LoginPacket(player.getUsername(),player.xPosIdx,player.yPosIdx);
                 sendData(packet.getData(),p.inetAddress,p.port);
             }
         }
@@ -89,8 +83,8 @@ public class Server implements Runnable{
 
     private void gamePacketMethod(GamePacket packet){
         Player p = playersOn.get(getPlayerByIndex(packet.getUsername()));
-        p.xPos = packet.getxPos();
-        p.yPos = packet.getyPos();
+        p.xPosIdx = packet.getxPos();
+        p.yPosIdx = packet.getyPos();
         p.currentDir = packet.getCurrentDir();
         p.attack = packet.isAttack();
         p.isMoving = packet.isMoving();

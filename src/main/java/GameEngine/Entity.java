@@ -1,13 +1,14 @@
 package GameEngine;
 
-import Graphics.*;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.util.Arrays;
+import Graphics.Animation;
+import Graphics.Sprite;
+import Graphics.Spritesheet;
+
+import java.awt.*;
 
 public abstract class Entity {
 
-    public int xPos, yPos;
+    public int xPosIdx, yPosIdx;
     protected final int DOWN = 0, LEFT = 1, UP=2, RIGHT = 3;
     //protected boolean up,right,down,left;
     protected Animation ani;

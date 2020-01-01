@@ -1,12 +1,10 @@
 package GameEngine;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.io.IOException;
 import java.util.Scanner;
 
 import Graphics.*;
@@ -62,7 +60,7 @@ public class GameWindow extends JFrame implements Runnable {
 
     public void setUpThread(){
         map.addEntity(player);
-        LoginPacket packet = new LoginPacket(player.getUsername(), player.xPos, player.yPos);
+        LoginPacket packet = new LoginPacket(player.getUsername(), player.xPosIdx, player.yPosIdx);
         if (server != null) {
             server.addPlayer(player, packet);
         }

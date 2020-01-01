@@ -5,15 +5,11 @@
  */
 package Network;
 
-import GameEngine.GameName;
 import GameEngine.GameWindow;
 import GameEngine.Player;
 import Graphics.Spritesheet;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.*;
 
 /**
@@ -68,8 +64,8 @@ public class Client implements Runnable{
     private void loginPacketMethod(LoginPacket packet, InetAddress inetAddress, int port){
         Player instance = new Player(new Spritesheet("testSprint.png",4,6), gw,inetAddress,port);
         instance.setUsername(packet.getUsername());
-        instance.xPos = packet.getxPos();
-        instance.yPos = packet.getyPos();
+        instance.xPosIdx = packet.getxPos();
+        instance.yPosIdx = packet.getyPos();
         gw.map.addEntity(instance);
     }
 

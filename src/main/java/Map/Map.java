@@ -7,7 +7,6 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 
 import GameEngine.Player;
-import Graphics.*;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -86,10 +85,15 @@ public class Map {
     public synchronized void playersMove(String username, int x ,int y, int currentDir, boolean isAttack, boolean isMoving){
         int index = getPlayerByIndex(username);
         Player player = (Player) getEntityList().get(index);
-        player.xPos = x;
-        player.yPos = y;
+        player.xPosIdx = reverseMap(x);
+        player.yPosIdx = reverseMap(y);
         player.currentDir = currentDir;
         player.attack = isAttack;
         player.isMoving = isMoving;
     }
+
+    int reverseMap(int xPos) {
+        return (xPos - 16)/32;
+    }
+
 }
