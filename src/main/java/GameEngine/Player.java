@@ -17,6 +17,8 @@ public class Player extends Entity {
     private MainListener input;
     public InetAddress inetAddress;
     public int port;
+    private boolean isHit;
+    private GameWindow gw;
     private Camera camera;
 
     public Player(Spritesheet sprite, GameWindow gw, InetAddress inetAddress, int port, Camera c, MainListener mainListener) {
@@ -34,11 +36,13 @@ public class Player extends Entity {
     public void init(InetAddress inetAddress, int port, GameWindow gw) {
         this.inetAddress = inetAddress;
         this.port = port;
-        x = gw.map.MAP_SIZE / 2;
-        y = gw.map.MAP_SIZE / 2;
-        xPos = indexToLoc(x);
-        yPos = indexToLoc(y);
-        firingTime = System.nanoTime();
+        this.gw = gw;
+        this.x = gw.map.MAP_SIZE / 2;
+        this.y = gw.map.MAP_SIZE / 2;
+        this.xPos = indexToLoc(x);
+        this.yPos = indexToLoc(y);
+        this.health = 100;
+        this.firingTime = System.nanoTime();
     }
 
     public void update() {
@@ -48,6 +52,11 @@ public class Player extends Entity {
         }
         move();
         removeBullets();
+        isHit = getCollision();
+        if(isHit){
+            loseHealth();
+            System.out.println("health = " + health);
+        }
     }
 
     public void render(Graphics g) {
@@ -143,5 +152,24 @@ public class Player extends Entity {
                 b.update();
             }
         }
+    }
+
+    private synchronized boolean getCollision(){
+        for (Entity e: gw.map.getEntityList()) {
+            if(!e.equals(this)){
+                for (int i =0; i < e.getBullets().size();i++) {
+                    Bullet b = e.getBullets().get(i);
+                    if(b.x == this.x && b.y == this.y){
+                        e.getBullets().remove(i);
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private void loseHealth(){
+        this.health -= Bullet.DAMAGE;
     }
 }

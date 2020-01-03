@@ -2,29 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8de9e012-702b-42f9-a359-021f0a1a3b02" name="Default Changelist" comment="Update">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Network/AttackPacket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/main/GameEngine/Bullet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/main/GameEngine/Bullet.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/main/GameEngine/Entity.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/main/GameEngine/Entity.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/main/GameEngine/GameWindow.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/main/GameEngine/GameWindow.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/main/GameEngine/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/main/GameEngine/Player.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/main/Map/Box.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/main/Map/Box.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/main/Map/Map.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/main/Map/Map.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/main/Network/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/main/Network/Client.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/main/Network/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/main/Network/Server.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/main/fireballSheet.png" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/main/fireballSheet.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/GameEngine/Bullet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GameEngine/Bullet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/GameEngine/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GameEngine/Entity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GameEngine/GameWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GameEngine/GameWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GameEngine/MainListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GameEngine/MainListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/GameEngine/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GameEngine/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Map/Box.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Map/Box.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Map/Map.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Map/Map.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Network/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Network/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Network/GamePacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Network/GamePacket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Network/Packet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Network/Packet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Network/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Network/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/fireballSheet.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/fireballSheet.png" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -41,14 +21,37 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/GameEngine/Player.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+            <state relative-caret-position="-112">
+              <caret line="43" column="26" selection-start-line="43" selection-start-column="26" selection-end-line="43" selection-end-column="26" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#4060#4061#0" expanded="true" />
-                <element signature="e#4126#4127#0" expanded="true" />
-                <element signature="e#4214#4215#0" expanded="true" />
+                <element signature="e#4329#4330#0" expanded="true" />
+                <element signature="e#4395#4396#0" expanded="true" />
+                <element signature="e#4483#4484#0" expanded="true" />
+                <element signature="e#5254#5255#0" expanded="true" />
+                <element signature="e#5293#5294#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/GameEngine/Bullet.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="9" column="18" selection-start-line="9" selection-start-column="18" selection-end-line="9" selection-end-column="18" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Network/Server.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="154">
+              <caret line="92" lean-forward="true" selection-start-line="92" selection-end-line="92" />
             </state>
           </provider>
         </entry>
@@ -56,8 +59,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Map/Map.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="816">
-              <caret line="48" column="13" lean-forward="true" selection-start-line="48" selection-start-column="13" selection-end-line="48" selection-end-column="13" />
+            <state relative-caret-position="238">
+              <caret line="74" lean-forward="true" selection-start-line="74" selection-end-line="74" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2204#2205#0" expanded="true" />
@@ -70,11 +73,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/GameEngine/Entity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="906">
-              <caret line="59" column="46" selection-start-line="59" selection-start-column="46" selection-end-line="59" selection-end-column="46" />
+            <state relative-caret-position="901">
+              <caret line="87" column="75" lean-forward="true" selection-start-line="87" selection-start-column="75" selection-end-line="87" selection-end-column="75" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Network/Client.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="22">
+              <caret line="50" column="22" lean-forward="true" selection-start-line="50" selection-start-column="22" selection-end-line="50" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -152,10 +164,10 @@
         <option value="$PROJECT_DIR$/src/main/java/Network/GamePacket.java" />
         <option value="$PROJECT_DIR$/src/main/java/Network/AttackPacket.java" />
         <option value="$PROJECT_DIR$/src/main/java/Network/Server.java" />
-        <option value="$PROJECT_DIR$/src/main/java/GameEngine/Bullet.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Network/Client.java" />
         <option value="$PROJECT_DIR$/src/main/java/Map/Map.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Network/Client.java" />
         <option value="$PROJECT_DIR$/src/main/java/GameEngine/Entity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/GameEngine/Bullet.java" />
         <option value="$PROJECT_DIR$/src/main/java/GameEngine/Player.java" />
       </list>
     </option>
@@ -331,7 +343,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1295" height="695" extended-state="7" />
+    <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Designer" order="0" />
@@ -347,7 +359,7 @@
       <window_info anchor="bottom" id="Version Control" order="3" />
       <window_info anchor="bottom" id="Message" order="4" />
       <window_info anchor="bottom" id="Find" order="5" weight="0.32764506" />
-      <window_info anchor="bottom" id="Run" order="6" weight="0.3339254" />
+      <window_info anchor="bottom" id="Run" order="6" weight="0.330373" />
       <window_info anchor="bottom" id="Debug" order="7" weight="0.39964476" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
@@ -650,30 +662,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/GameEngine/Bullet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="25" column="71" selection-start-line="25" selection-start-column="71" selection-end-line="25" selection-end-column="71" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Network/Server.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="277">
-          <caret line="94" column="73" lean-forward="true" selection-start-line="94" selection-start-column="73" selection-end-line="94" selection-end-column="73" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Network/Client.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="413">
-          <caret line="88" column="70" selection-start-line="88" selection-start-column="70" selection-end-line="88" selection-end-column="70" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Network/Packet.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
@@ -684,10 +672,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Network/Server.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="92" lean-forward="true" selection-start-line="92" selection-end-line="92" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Network/Client.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22">
+          <caret line="50" column="22" lean-forward="true" selection-start-line="50" selection-start-column="22" selection-end-line="50" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/GameEngine/Entity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="901">
+          <caret line="87" column="75" lean-forward="true" selection-start-line="87" selection-start-column="75" selection-end-line="87" selection-end-column="75" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Map/Map.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="816">
-          <caret line="48" column="13" lean-forward="true" selection-start-line="48" selection-start-column="13" selection-end-line="48" selection-end-column="13" />
+        <state relative-caret-position="238">
+          <caret line="74" lean-forward="true" selection-start-line="74" selection-end-line="74" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2204#2205#0" expanded="true" />
@@ -696,10 +708,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/GameEngine/Entity.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/GameEngine/Bullet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="906">
-          <caret line="59" column="46" selection-start-line="59" selection-start-column="46" selection-end-line="59" selection-end-column="46" />
+        <state relative-caret-position="153">
+          <caret line="9" column="18" selection-start-line="9" selection-start-column="18" selection-end-line="9" selection-end-column="18" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -708,13 +720,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/GameEngine/Player.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+        <state relative-caret-position="-112">
+          <caret line="43" column="26" selection-start-line="43" selection-start-column="26" selection-end-line="43" selection-end-column="26" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#4060#4061#0" expanded="true" />
-            <element signature="e#4126#4127#0" expanded="true" />
-            <element signature="e#4214#4215#0" expanded="true" />
+            <element signature="e#4329#4330#0" expanded="true" />
+            <element signature="e#4395#4396#0" expanded="true" />
+            <element signature="e#4483#4484#0" expanded="true" />
+            <element signature="e#5254#5255#0" expanded="true" />
+            <element signature="e#5293#5294#0" expanded="true" />
           </folding>
         </state>
       </provider>

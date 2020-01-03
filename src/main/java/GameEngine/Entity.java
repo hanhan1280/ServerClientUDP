@@ -83,13 +83,9 @@ public abstract class Entity {
         return h;
     }
 
-    public int indexToLoc(int index) {
-        return index * 32 - 16;
-    }
+    public int indexToLoc(int index) {return index * 32 - 16;}
 
-    protected synchronized ArrayList<Bullet> getBullets() {
-        return bullets;
-    }
+    protected synchronized ArrayList<Bullet> getBullets() {return bullets;}
 
     abstract public void render(Graphics g);
 }

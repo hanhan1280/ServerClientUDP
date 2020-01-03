@@ -7,7 +7,7 @@ import java.awt.*;
 public class Bullet{
 
     public static Spritesheet sheet = new Spritesheet("fireballSheet.png",4,3);
-    public final int DAMAGE = 25;
+    public static final int DAMAGE = 25;
     public final int MAX_DISTANCE = 10;
     Animation ani;
     int initX,initY;
