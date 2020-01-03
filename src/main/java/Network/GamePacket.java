@@ -7,7 +7,6 @@ public class GamePacket extends Packet{
     private int xPos;
     private int yPos;
     private int currentDir;
-    private boolean isAttack;
     private boolean isMoving;
 
 
@@ -18,17 +17,16 @@ public class GamePacket extends Packet{
         this.xPos = Integer.parseInt(dataMessage[2]);
         this.yPos = Integer.parseInt(dataMessage[3]);
         this.currentDir = Integer.parseInt(dataMessage[4]);
-        this.isAttack = Integer.parseInt(dataMessage[5]) == 1;
-        this.isMoving = Integer.parseInt(dataMessage[6]) == 1;
+
+        this.isMoving = Integer.parseInt(dataMessage[5]) == 1;
     }
 
-    public GamePacket(String username, int xPos, int yPos, int currentDir, boolean isAttack, boolean isMoving) {
+    public GamePacket(String username, int xPos, int yPos, int currentDir, boolean isMoving) {
         super(02);
         this.username = username;
         this.currentDir = currentDir;
         this.xPos =xPos;
         this.yPos = yPos;
-        this.isAttack = isAttack;
         this.isMoving = isMoving;
     }
 
@@ -44,7 +42,7 @@ public class GamePacket extends Packet{
 
     @Override
     public byte[] getData() {
-        return  ("" + id + "#" + this.username + "#" + this.xPos + "#" + this.yPos + "#" + this.currentDir + "#" + (this.isAttack? 1: 0) + "#" + (this.isMoving? 1:0) ).getBytes();
+        return  ("" + id + "#" + this.username + "#" + this.xPos + "#" + this.yPos + "#" + this.currentDir + "#"  + (this.isMoving? 1:0) ).getBytes();
     }
 
     public String getUsername() {
@@ -61,10 +59,6 @@ public class GamePacket extends Packet{
 
     public int getCurrentDir() {
         return currentDir;
-    }
-
-    public boolean isAttack() {
-        return isAttack;
     }
 
     public boolean isMoving() {

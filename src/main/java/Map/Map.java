@@ -3,79 +3,90 @@ package Map;
 import GameEngine.Entity;
 import GameEngine.GameWindow;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 
 import GameEngine.Player;
-import Graphics.*;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class Map {
 
     private GameWindow gw;
-    private BufferedImage image;
-    public final int MAP_SIZE = 32;
+    public static final int MAP_SIZE = 32;
     private int[][] map;
     private ArrayList<Entity> entities = new ArrayList<>();
 
-    public Map(GameWindow gw){
-        try {
-            this.image = ImageIO.read(Box.class.getResourceAsStream("/Texture.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public Map(GameWindow gw) {
         this.gw = gw;
         loadMap();
     }
 
-    public void loadMap(){
+    public void loadMap() {
         map = new int[MAP_SIZE][MAP_SIZE];
         for (int y = 0; y < MAP_SIZE; y++) {
             for (int x = 0; x < MAP_SIZE; x++) {
-                map[x][y] = 0;
+                if (y == MAP_SIZE - 1) {
+                    map[x][y] = Box.BOTTOM.id;
+                } else if (x == 0 && y == 0) {
+                    map[x][y] = Box.CORNER_TOPLEFT.id;
+                } else if (x == MAP_SIZE - 1 && y == 0) {
+                    map[x][y] = Box.CORNER_TOPRIGHT.id;
+                } else if (x == 0 && y == MAP_SIZE - 2) {
+                    map[x][y] = Box.CORNER_BTMLEFT.id;
+                } else if (x == MAP_SIZE - 1 && y == MAP_SIZE - 2) {
+                    map[x][y] = Box.CORNER_BTMRIGHT.id;
+                } else if (x == 0) {
+                    map[x][y] = Box.EDGE_LEFT.id;
+                } else if (y == 0) {
+                    map[x][y] = Box.EDGE_UP.id;
+                } else if (x == MAP_SIZE - 1) {
+                    map[x][y] = Box.EDGE_RIGHT.id;
+                } else if (y == MAP_SIZE - 2) {
+                    map[x][y] = Box.EDGE_DOWN.id;
+                } else {
+                    map[x][y] = Box.NORM.id;
+                }
             }
         }
     }
 
-    public Box getBoxID(int x, int y){
+    public Box getBoxID(int x, int y) {
         Box b = Box.boxArr[map[x][y]];
         return b;
     }
 
-    public void render(Graphics g){
+    public void render(Graphics g) {
         for (int y = 0; y < MAP_SIZE; y++) {
             for (int x = 0; x < MAP_SIZE; x++) {
-               new Box(image).render(g,x*Box.BOX_SIZE-gw.camera.xOffset,y*Box.BOX_SIZE-gw.camera.yOffset);
+                Box.render(g, map[x][y], x * Box.BOX_SIZE - gw.camera.xOffset, y * Box.BOX_SIZE - gw.camera.yOffset);
             }
         }
     }
 
-    public void renderEntity(Graphics g){
-        for (Entity e : entities) {
+    public void renderEntity(Graphics g) {
+        for (Entity e : getEntityList()) {
             e.render(g);
         }
     }
 
-    public synchronized ArrayList<Entity> getEntityList(){
+    public synchronized ArrayList<Entity> getEntityList() {
         return this.entities;
     }
-    public synchronized void addEntity(Entity e){
-        entities.add(e);
+
+    public synchronized void addEntity(Entity e) {
+        this.getEntityList().add(e);
     }
 
-    public void update(){
-        for (Entity e : entities) {
+    public void update() {
+        for (Entity e : getEntityList()) {
             e.update();
         }
     }
 
-    public int getPlayerByIndex(String username){
+    public int getPlayerByIndex(String username) {
         int index = 0;
-        for (Entity e : entities) {
-            if(((Player)e).getUsername().equals(username)){
+        for (Entity e : getEntityList()) {
+            if (((Player) e).getUsername().equals(username)) {
                 break;
             }
             index++;
@@ -83,13 +94,18 @@ public class Map {
         return index;
     }
 
-    public synchronized void playersMove(String username, int x ,int y, int currentDir, boolean isAttack, boolean isMoving){
+    public synchronized void playersMove(String username, int x, int y, int currentDir, boolean isMoving) {
         int index = getPlayerByIndex(username);
         Player player = (Player) getEntityList().get(index);
-        player.xPos = x;
-        player.yPos = y;
+        player.x = x;
+        player.y = y;
         player.currentDir = currentDir;
-        player.attack = isAttack;
         player.isMoving = isMoving;
+    }
+
+    public synchronized void playersAttack(String username, boolean isAttack) {
+        int index = getPlayerByIndex(username);
+        Player player = (Player) getEntityList().get(index);
+        player.attack = isAttack;
     }
 }

@@ -57,6 +57,10 @@ public class Server implements Runnable{
                 packet = new GamePacket(data);
                 gamePacketMethod((GamePacket) packet);
                 break;
+            case Packet.ATTACK_PACKET:
+                packet = new AttackPacket(data);
+                attackPacketMethod((AttackPacket) packet);
+                break;
         }
     }
 
@@ -89,11 +93,16 @@ public class Server implements Runnable{
 
     private void gamePacketMethod(GamePacket packet){
         Player p = playersOn.get(getPlayerByIndex(packet.getUsername()));
-        p.xPos = packet.getxPos();
-        p.yPos = packet.getyPos();
+        p.x = packet.getxPos();
+        p.y = packet.getyPos();
         p.currentDir = packet.getCurrentDir();
-        p.attack = packet.isAttack();
         p.isMoving = packet.isMoving();
+        packet.writeData(this);
+    }
+
+    private void attackPacketMethod(AttackPacket packet){
+        Player p = playersOn.get(getPlayerByIndex(packet.getUsername()));
+        p.attack = packet.isAttack();
         packet.writeData(this);
     }
 

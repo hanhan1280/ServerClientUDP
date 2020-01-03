@@ -53,6 +53,10 @@ public class Client implements Runnable{
                 packet = new GamePacket(data);
                 gamePacketMethod((GamePacket) packet, iNetAddress, port);
                 break;
+            case Packet.ATTACK_PACKET:
+                packet = new AttackPacket(data);
+                attackPacketMethod((AttackPacket) packet);
+                break;
         }
     }
 
@@ -66,7 +70,7 @@ public class Client implements Runnable{
     }
 
     private void loginPacketMethod(LoginPacket packet, InetAddress inetAddress, int port){
-        Player instance = new Player(new Spritesheet("testSprint.png",4,6), gw,inetAddress,port);
+        Player instance = new Player(new Spritesheet("blueSprite.png",4,6), gw,inetAddress,port);
         instance.setUsername(packet.getUsername());
         instance.xPos = packet.getxPos();
         instance.yPos = packet.getyPos();
@@ -78,8 +82,13 @@ public class Client implements Runnable{
     }
 
     private void gamePacketMethod(GamePacket packet, InetAddress inetAddress, int port){
-        gw.map.playersMove(packet.getUsername(),packet.getxPos(),packet.getyPos(),packet.getCurrentDir(),packet.isAttack(),packet.isMoving());
+        gw.map.playersMove(packet.getUsername(),packet.getxPos(),packet.getyPos(),packet.getCurrentDir(),packet.isMoving());
     }
+
+    private void attackPacketMethod(AttackPacket packet){
+        gw.map.playersAttack(packet.getUsername(), packet.isAttack());
+    }
+
 
     @Override
     public void run() {

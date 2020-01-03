@@ -48,13 +48,13 @@ public class GameWindow extends JFrame implements Runnable {
     public void init(){
         System.out.println("Enter username: ");
         username = scanner.nextLine();
+        map = new Map(this);
         Fonts font = new Fonts(new Spritesheet("fontsheet.png",15,5));
         mainListener = new MainListener(this,thisGame);
         camera = new Camera(this,0,0);
         player = new Player(new Spritesheet("testSprint.png",4,6), this, null, -1, camera,mainListener);
         player.setUsername(username);
         System.out.println(player.getUsername());
-        map = new Map(this);
         addKeyListener(mainListener);
         setVisible(true);
         start();
