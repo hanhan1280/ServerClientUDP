@@ -1,4 +1,4 @@
-package Network;
+package Network.Packets;
 
 import Network.Client;
 import Network.Server;

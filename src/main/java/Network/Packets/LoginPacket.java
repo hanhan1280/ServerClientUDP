@@ -1,6 +1,10 @@
-package Network;
+package Network.Packets;
 
-public class LoginPacket extends Packet{
+import Network.Client;
+import Network.Packets.Packet;
+import Network.Server;
+
+public class LoginPacket extends Packet {
 
     private String username = null;
     private int xPos,yPos;

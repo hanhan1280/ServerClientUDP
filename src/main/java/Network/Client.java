@@ -5,31 +5,29 @@
  */
 package Network;
 
-import GameEngine.GameName;
 import GameEngine.GameWindow;
-import GameEngine.Player;
+import GameEngine.Player.Player;
 import Graphics.Spritesheet;
+import Network.Packets.*;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.*;
 
 /**
- *
  * @author hanan
  */
-public class Client implements Runnable{
+public class Client implements Runnable {
     private InetAddress inetAddress;
     private DatagramSocket socket;
     GameWindow gw;
+    int port;
 
-    public Client (GameWindow gw){
+    public Client(GameWindow gw, String address, int port) {
         this.gw = gw;
         try {
             this.socket = new DatagramSocket();
-            this.inetAddress = InetAddress.getByName("localhost");
+            this.inetAddress = InetAddress.getByName(address);
+            this.port = port;
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (SocketException e) {
@@ -37,21 +35,23 @@ public class Client implements Runnable{
         }
     }
 
-    public void communicate(byte[] data, InetAddress iNetAddress, int port){
+    public void communicate(byte[] data, InetAddress inetAddress, int port) {
         String message = new String(data).trim();
         String[] dataReceived = message.split("#");
         int packetType = Integer.parseInt(dataReceived[0]);
         Packet packet = null;
-        switch (packetType){
+        switch (packetType) {
             case Packet.LOGIN_PACKET:
                 packet = new LoginPacket(data);
-                loginPacketMethod((LoginPacket) packet, iNetAddress, port);
+                loginPacketMethod((LoginPacket) packet, inetAddress, port);
                 break;
             case Packet.DISCONNECT_PACKET:
+                packet = new DisconnectPacket(data);
+                disconnectPacketMethod((DisconnectPacket) packet, inetAddress,port);
                 break;
             case Packet.GAME_PACKET:
                 packet = new GamePacket(data);
-                gamePacketMethod((GamePacket) packet, iNetAddress, port);
+                gamePacketMethod((GamePacket) packet, inetAddress, port);
                 break;
             case Packet.ATTACK_PACKET:
                 packet = new AttackPacket(data);
@@ -60,8 +60,8 @@ public class Client implements Runnable{
         }
     }
 
-    public void sendData(byte[] data){
-        DatagramPacket packet = new DatagramPacket(data,data.length, this.inetAddress, 8888);
+    public void sendData(byte[] data) {
+        DatagramPacket packet = new DatagramPacket(data, data.length, this.inetAddress, this.port);
         try {
             socket.send(packet);
         } catch (IOException e) {
@@ -69,30 +69,28 @@ public class Client implements Runnable{
         }
     }
 
-    private void loginPacketMethod(LoginPacket packet, InetAddress inetAddress, int port){
-        Player instance = new Player(new Spritesheet("blueSprite.png",4,6), gw,inetAddress,port);
+    private void loginPacketMethod(LoginPacket packet, InetAddress inetAddress, int port) {
+        Player instance = new Player(new Spritesheet("blueSprite.png", 4, 6), gw, packet.getxPos(),packet.getyPos(),inetAddress, port);
         instance.setUsername(packet.getUsername());
-        instance.xPos = packet.getxPos();
-        instance.yPos = packet.getyPos();
         gw.map.addEntity(instance);
     }
 
-    private void disconnectPacketMethod(){
-
+    private void disconnectPacketMethod(DisconnectPacket packet, InetAddress inetAddress, int port) {
+        gw.map.removeEntity(packet.getUsername());
     }
 
-    private void gamePacketMethod(GamePacket packet, InetAddress inetAddress, int port){
-        gw.map.playersMove(packet.getUsername(),packet.getxPos(),packet.getyPos(),packet.getCurrentDir(),packet.isMoving());
+    private void gamePacketMethod(GamePacket packet, InetAddress inetAddress, int port) {
+        gw.map.playersMove(packet.getUsername(), packet.getxPos(), packet.getyPos(), packet.getCurrentDir(), packet.isMoving());
     }
 
-    private void attackPacketMethod(AttackPacket packet){
+    private void attackPacketMethod(AttackPacket packet) {
         gw.map.playersAttack(packet.getUsername(), packet.isAttack());
     }
 
 
     @Override
     public void run() {
-        while(true){
+        while (true) {
             byte[] data = new byte[1024];
             DatagramPacket packet = new DatagramPacket(data, data.length);
             try {

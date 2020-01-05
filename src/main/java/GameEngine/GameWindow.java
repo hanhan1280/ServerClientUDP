@@ -1,92 +1,90 @@
 package GameEngine;
 
-import javax.imageio.ImageIO;
+import GameEngine.Player.Player;
+import Graphics.Fonts;
+import Graphics.Spritesheet;
+import Map.Camera;
+import Map.Map;
+import Network.Client;
+import Network.Packets.LoginPacket;
+import Network.Server;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
-import java.io.IOException;
 import java.util.Scanner;
-
-import Graphics.*;
-import Map.*;
-import Network.Client;
-import Network.LoginPacket;
-import Network.Server;
 
 public class GameWindow extends JFrame implements Runnable {
 
-    Scanner scanner = new Scanner(System.in);
-    GameName thisGame;
-    public final int WIDTH = 800;
-    public final int HEIGHT = WIDTH/12 * 9;
-    public Camera camera;
-    private int[] pixels;
-    public Player player;
-    private BufferedImage image;
-    public MainListener mainListener;
-    private boolean running;
-    String username;
-    public Map map;
     public static GameWindow gameWindow;
+    public final int WIDTH = 800;
+    public final int HEIGHT = WIDTH / 12 * 9;
+    public Camera camera;
+    public Player player;
+    public MainListener mainListener;
+    public Map map;
     public Server server;
     public Client client;
+    ShooterClientServer thisGame;
+    private String username, address;
+    private int port;
+    Scanner scanner;
+    private BufferedImage image;
+    private boolean running, isServer;
 
-    public GameWindow(GameName thisGame){
+    public GameWindow(ShooterClientServer thisGame, String username, String address, int port, boolean isServer) {
         this.thisGame = thisGame;
         gameWindow = this;
-        image = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
-        pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-        setTitle("CPT Game");
+        this.username = username;
+        this.address = address;
+        this.port = port;
+        this.isServer = isServer;
+        image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+        setTitle("ShooterClientServer");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setSize(WIDTH,HEIGHT);
+        setSize(WIDTH, HEIGHT);
         setResizable(false);
+        map = new Map(this);
+        Fonts font = new Fonts(new Spritesheet("fontsheet.png", 15, 5));
+        mainListener = new MainListener(this, thisGame);
+        camera = new Camera(this, 0, 0);
     }
 
-    public void init(){
-        System.out.println("Enter username: ");
-        username = scanner.nextLine();
-        map = new Map(this);
-        Fonts font = new Fonts(new Spritesheet("fontsheet.png",15,5));
-        mainListener = new MainListener(this,thisGame);
-        camera = new Camera(this,0,0);
-        player = new Player(new Spritesheet("testSprint.png",4,6), this, null, -1, camera,mainListener);
+    public void init() {
+        player = new Player(new Spritesheet("testSprint.png", 4, 6), this, 16, 16, null, -1, camera, mainListener);
         player.setUsername(username);
-        System.out.println(player.getUsername());
         addKeyListener(mainListener);
         setVisible(true);
         start();
     }
 
-    public void setUpThread(){
+    public void setUpThread() {
         map.addEntity(player);
-        LoginPacket packet = new LoginPacket(player.getUsername(), player.xPos, player.yPos);
+        LoginPacket packet = new LoginPacket(player.getUsername(), player.x, player.y);
         if (server != null) {
-            server.addPlayer(player, packet);
+            server.loginPacketMethod(player, packet);
         }
         packet.writeData(client);
     }
 
-    protected synchronized void start(){
+    protected synchronized void start() {
         running = true;
-        System.out.println("Server?");
-        String s = scanner.nextLine();
-        if(s.equalsIgnoreCase("server")){
-            server = new Server(this);
+        if (isServer) {
+            server = new Server(this, this.port);
             new Thread(server).start();
         }
-        client = new Client(this);
+        client = new Client(this,this.address,this.port);
         new Thread(client).start();
         new Thread(this).start();
     }
 
-    protected synchronized void stop(){
+    protected synchronized void stop() {
         running = false;
     }
 
-    public void render(){
+    public void render() {
         BufferStrategy bs = getBufferStrategy();
         if (bs == null) {
             createBufferStrategy(3);
@@ -101,46 +99,30 @@ public class GameWindow extends JFrame implements Runnable {
     }
 
     private void updateNow() {
-        //player.update();
         map.update();
     }
 
     @Override
     public void run() {
-        long lastTime = System.nanoTime();
-        double nsPerTick = 1000000000D / 60D;
-
-        int ticks = 0;
-        int frames = 0;
-
-        long lastTimer = System.currentTimeMillis();
-        double delta = 0;
+        long current = System.nanoTime(), currentTime = System.currentTimeMillis();
+        double nsPerFrame = 1000000000D / 60D, delta = 0;//for 60fps each frame takes:
         setUpThread();
         while (running) {
-            long now = System.nanoTime();
-            delta += (now - lastTime) / nsPerTick;
-            lastTime = now;
-            boolean shouldRender = true;
+            long next = System.nanoTime();
+            delta += (next - current) / nsPerFrame;
+            current = next;
             while (delta >= 1) {
-                ticks++;
                 delta -= 1;
                 updateNow();
-                shouldRender = true;
             }
             try {
                 Thread.sleep(2);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if (shouldRender) {
-                frames++;
-                render();
-            }
-
-            if (System.currentTimeMillis() - lastTimer >= 1000) {
-                lastTimer += 1000;
-                frames = 0;
-                ticks = 0;
+            render();
+            if (System.currentTimeMillis() - currentTime >= 1000) {
+                currentTime += 1000;
             }
         }
     }

@@ -1,11 +1,10 @@
-package GameEngine;
+package GameEngine.Player;
 
+import GameEngine.Player.Bullet;
 import Graphics.*;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public abstract class Entity {
 
@@ -83,9 +82,13 @@ public abstract class Entity {
         return h;
     }
 
-    public int indexToLoc(int index) {return index * 32 - 16;}
+    public int indexToLoc(int index) {
+        return index * 32 - 16;
+    }
 
-    protected synchronized ArrayList<Bullet> getBullets() {return bullets;}
+    protected synchronized ArrayList<Bullet> getBullets() {
+        return bullets;
+    }
 
     abstract public void render(Graphics g);
 }

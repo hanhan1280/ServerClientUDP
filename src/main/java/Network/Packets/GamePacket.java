@@ -1,6 +1,10 @@
-package Network;
+package Network.Packets;
 
-public class GamePacket extends Packet{
+import Network.Client;
+import Network.Packets.Packet;
+import Network.Server;
+
+public class GamePacket extends Packet {
 
 
     private String username;

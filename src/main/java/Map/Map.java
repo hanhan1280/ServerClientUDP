@@ -1,11 +1,11 @@
 package Map;
 
-import GameEngine.Entity;
+import GameEngine.Player.Entity;
 import GameEngine.GameWindow;
 
 import java.awt.*;
 
-import GameEngine.Player;
+import GameEngine.Player.Player;
 
 import java.util.ArrayList;
 
@@ -69,14 +69,6 @@ public class Map {
         }
     }
 
-    public synchronized ArrayList<Entity> getEntityList() {
-        return this.entities;
-    }
-
-    public synchronized void addEntity(Entity e) {
-        this.getEntityList().add(e);
-    }
-
     public void update() {
         for (Entity e : getEntityList()) {
             e.update();
@@ -92,6 +84,24 @@ public class Map {
             index++;
         }
         return index;
+    }
+
+    public synchronized ArrayList<Entity> getEntityList() {
+        return this.entities;
+    }
+
+    public synchronized void addEntity(Entity e) {
+        this.getEntityList().add(e);
+    }
+
+    public synchronized void removeEntity(String username) {
+        for (int i = 0; i < getEntityList().size(); i++) {
+            Entity e = getEntityList().get(i);
+            if (((Player) e).getUsername().equals(username)) {
+                getEntityList().remove(i);
+                i--;
+            }
+        }
     }
 
     public synchronized void playersMove(String username, int x, int y, int currentDir, boolean isMoving) {

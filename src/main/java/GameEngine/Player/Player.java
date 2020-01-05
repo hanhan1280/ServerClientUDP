@@ -1,19 +1,21 @@
-package GameEngine;
+package GameEngine.Player;
 
 
+import GameEngine.GameWindow;
+import GameEngine.MainListener;
 import Graphics.*;
-import Map.Box;
 import Map.Camera;
-import Network.AttackPacket;
-import Network.GamePacket;
+import Network.Packets.AttackPacket;
+import Network.Packets.GamePacket;
+
 import java.awt.*;
 import java.net.InetAddress;
-import java.util.ArrayList;
 
 public class Player extends Entity {
 
     private int health;
     private String username;
+    private Spritesheet healthSheet;
     private MainListener input;
     public InetAddress inetAddress;
     public int port;
@@ -21,27 +23,28 @@ public class Player extends Entity {
     private GameWindow gw;
     private Camera camera;
 
-    public Player(Spritesheet sprite, GameWindow gw, InetAddress inetAddress, int port, Camera c, MainListener mainListener) {
+    public Player(Spritesheet sprite, GameWindow gw, int x, int y, InetAddress inetAddress, int port, Camera c, MainListener mainListener) {
         super(sprite);
         this.camera = c;
         this.input = mainListener;
-        init(inetAddress, port, gw);
+        init(inetAddress, port, gw, x, y);
     }
 
-    public Player(Spritesheet sprite, GameWindow gw, InetAddress inetAddress, int port) {
+    public Player(Spritesheet sprite, GameWindow gw, int x, int y, InetAddress inetAddress, int port) {
         super(sprite);
-        init(inetAddress, port, gw);
+        init(inetAddress, port, gw, x, y);
     }
 
-    public void init(InetAddress inetAddress, int port, GameWindow gw) {
+    public void init(InetAddress inetAddress, int port, GameWindow gw, int x, int y) {
         this.inetAddress = inetAddress;
         this.port = port;
         this.gw = gw;
-        this.x = gw.map.MAP_SIZE / 2;
-        this.y = gw.map.MAP_SIZE / 2;
+        this.x = x;
+        this.y = y;
         this.xPos = indexToLoc(x);
         this.yPos = indexToLoc(y);
         this.health = 100;
+        this.healthSheet = new Spritesheet("healthSheet.png",1,5);
         this.firingTime = System.nanoTime();
     }
 
@@ -53,18 +56,19 @@ public class Player extends Entity {
         move();
         removeBullets();
         isHit = getCollision();
-        if(isHit){
+        if (isHit) {
             loseHealth();
-            System.out.println("health = " + health);
         }
     }
 
     public void render(Graphics g) {
         if (camera != null) {
             Fonts.render(g, username, GameWindow.gameWindow.WIDTH / 2, GameWindow.gameWindow.HEIGHT / 2 + 200, 1.6f);
+            g.drawImage(getHealthBar().image,GameWindow.gameWindow.WIDTH / 2 - healthSheet.spriteW/2,GameWindow.gameWindow.HEIGHT / 2 -100, null);
             g.drawImage(ani.getImage().image, xPos - camera.xOffset, yPos - camera.yOffset, w, h, null);
         } else {
             Fonts.render(g, username, xPos - GameWindow.gameWindow.camera.xOffset, yPos - GameWindow.gameWindow.camera.yOffset - h, 1);
+            g.drawImage(getHealthBar().image,xPos - GameWindow.gameWindow.camera.xOffset - healthSheet.spriteW/2,yPos - GameWindow.gameWindow.camera.yOffset-h-50, null);
             g.drawImage(ani.getImage().image, xPos - GameWindow.gameWindow.camera.xOffset, yPos - GameWindow.gameWindow.camera.yOffset, w, h, null);
         }
         for (Bullet b : this.getBullets()) {
@@ -117,29 +121,17 @@ public class Player extends Entity {
             int targetX = indexToLoc(x);
             int targetY = indexToLoc(y);
             if (targetX - xPos > 0) {
-                xPos += 2;
+                xPos += 4;
             } else if (targetX - xPos < 0) {
-                xPos -= 2;
+                xPos -= 4;
             }
             if (targetY - yPos > 0) {
-                yPos += 2;
+                yPos += 4;
             } else if (targetY - yPos < 0) {
-                yPos -= 2;
+                yPos -= 4;
             }
             return;
         }
-    }
-
-    public int getHealth() {
-        return health;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public synchronized void removeBullets() {
@@ -154,12 +146,12 @@ public class Player extends Entity {
         }
     }
 
-    private synchronized boolean getCollision(){
-        for (Entity e: gw.map.getEntityList()) {
-            if(!e.equals(this)){
-                for (int i =0; i < e.getBullets().size();i++) {
+    private synchronized boolean getCollision() {
+        for (Entity e : gw.map.getEntityList()) {
+            if (!e.equals(this)) {
+                for (int i = 0; i < e.getBullets().size(); i++) {
                     Bullet b = e.getBullets().get(i);
-                    if(b.x == this.x && b.y == this.y){
+                    if (b.x == this.x && b.y == this.y) {
                         e.getBullets().remove(i);
                         return true;
                     }
@@ -169,7 +161,38 @@ public class Player extends Entity {
         return false;
     }
 
-    private void loseHealth(){
+    private Sprite getHealthBar(){
+        if(health<=0){
+            return healthSheet.spriteArray[0][4];
+        }
+        switch (health%100){
+            case 0:
+                return healthSheet.spriteArray[0][0];
+            case 75:
+                return healthSheet.spriteArray[0][1];
+            case 50:
+                return healthSheet.spriteArray[0][2];
+            case 25:
+                return healthSheet.spriteArray[0][3];
+            default:
+                return null;
+        }
+    }
+
+    private void loseHealth() {
         this.health -= Bullet.DAMAGE;
+    }
+
+
+    public int getHealth() {
+        return health;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

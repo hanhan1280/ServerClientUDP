@@ -1,4 +1,8 @@
-package Network;
+package Network.Packets;
+
+import Network.Client;
+import Network.Packets.Packet;
+import Network.Server;
 
 public class AttackPacket extends Packet {
 

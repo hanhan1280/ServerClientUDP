@@ -1,16 +1,18 @@
 package GameEngine;
 
+import GameEngine.Player.Player;
+
 import java.awt.event.*;
 
 public class MainListener implements KeyListener{
 
     public boolean right, left, up, down, attack;
     private GameWindow gw;
-    private GameName thisGame;
+    private ShooterClientServer thisGame;
     private Player player;
     private int[][] map;
 
-    public MainListener(GameWindow gw, GameName thisGame){
+    public MainListener(GameWindow gw, ShooterClientServer thisGame){
         this.gw = gw;
         this.thisGame = thisGame;
         right = false;

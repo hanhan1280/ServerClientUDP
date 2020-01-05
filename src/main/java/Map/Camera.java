@@ -1,6 +1,6 @@
 package Map;
 
-import GameEngine.Entity;
+import GameEngine.Player.Entity;
 import GameEngine.GameWindow;
 
 public class Camera {
