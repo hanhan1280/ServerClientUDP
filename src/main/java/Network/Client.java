@@ -10,6 +10,7 @@ import GameEngine.Player.Player;
 import Graphics.Spritesheet;
 import Network.Packets.*;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.*;
 
@@ -29,7 +30,7 @@ public class Client implements Runnable {
             this.inetAddress = InetAddress.getByName(address);
             this.port = port;
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "NO Host at this IP Address");
         } catch (SocketException e) {
             e.printStackTrace();
         }
@@ -41,9 +42,11 @@ public class Client implements Runnable {
         int packetType = Integer.parseInt(dataReceived[0]);
         Packet packet = null;
         switch (packetType) {
-            case Packet.LOGIN_PACKET:
-                packet = new LoginPacket(data);
-                loginPacketMethod((LoginPacket) packet, inetAddress, port);
+            default:
+                break;
+            case Packet.CONNECT_PACKET:
+                packet = new ConnectPacket(data);
+                connectPacketMethod((ConnectPacket) packet, inetAddress, port);
                 break;
             case Packet.DISCONNECT_PACKET:
                 packet = new DisconnectPacket(data);
@@ -65,11 +68,12 @@ public class Client implements Runnable {
         try {
             socket.send(packet);
         } catch (IOException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null,"IP Address at this Server is unreachable");
+            System.exit(-1);
         }
     }
 
-    private void loginPacketMethod(LoginPacket packet, InetAddress inetAddress, int port) {
+    private void connectPacketMethod(ConnectPacket packet, InetAddress inetAddress, int port) {
         Player instance = new Player(new Spritesheet("blueSprite.png", 4, 6), gw, packet.getxPos(),packet.getyPos(),inetAddress, port);
         instance.setUsername(packet.getUsername());
         gw.map.addEntity(instance);

@@ -6,17 +6,20 @@ import Graphics.Spritesheet;
 import Map.Camera;
 import Map.Map;
 import Network.Client;
-import Network.Packets.LoginPacket;
+import Network.Packets.DisconnectPacket;
+import Network.Packets.ConnectPacket;
 import Network.Server;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.util.Scanner;
 
 public class GameWindow extends JFrame implements Runnable {
 
+    private Thread clientThread, serverThread, gameThread;
     public static GameWindow gameWindow;
     public final int WIDTH = 800;
     public final int HEIGHT = WIDTH / 12 * 9;
@@ -29,9 +32,9 @@ public class GameWindow extends JFrame implements Runnable {
     ShooterClientServer thisGame;
     private String username, address;
     private int port;
-    Scanner scanner;
     private BufferedImage image;
-    private boolean running, isServer;
+    private boolean running;
+    public boolean isServer;
 
     public GameWindow(ShooterClientServer thisGame, String username, String address, int port, boolean isServer) {
         this.thisGame = thisGame;
@@ -56,32 +59,49 @@ public class GameWindow extends JFrame implements Runnable {
         player = new Player(new Spritesheet("testSprint.png", 4, 6), this, 16, 16, null, -1, camera, mainListener);
         player.setUsername(username);
         addKeyListener(mainListener);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent we) {
+                if(!player.isDisconnected()) {
+                    DisconnectPacket packet = new DisconnectPacket(player.getUsername());
+                    packet.writeData(client);
+                }
+            }
+        });
         setVisible(true);
         start();
     }
 
     public void setUpThread() {
         map.addEntity(player);
-        LoginPacket packet = new LoginPacket(player.getUsername(), player.x, player.y);
+        ConnectPacket packet = new ConnectPacket(player.getUsername(), player.x, player.y);
         if (server != null) {
-            server.loginPacketMethod(player, packet);
+            server.connectPacketMethod(player, packet);
         }
         packet.writeData(client);
     }
 
-    protected synchronized void start() {
+    public synchronized void start() {
         running = true;
+        gameThread = new Thread(this);
         if (isServer) {
             server = new Server(this, this.port);
-            new Thread(server).start();
+            serverThread = new Thread(server, "Server");
+            serverThread.start();
         }
         client = new Client(this,this.address,this.port);
-        new Thread(client).start();
-        new Thread(this).start();
+        clientThread = new Thread(client);
+        clientThread.start();
+        gameThread.start();
     }
 
-    protected synchronized void stop() {
+    public synchronized void stop() {
         running = false;
+        try {
+            gameThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void render() {

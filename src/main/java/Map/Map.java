@@ -1,20 +1,20 @@
 package Map;
 
-import GameEngine.Player.Entity;
 import GameEngine.GameWindow;
-
-import java.awt.*;
-
+import GameEngine.Player.Entity;
 import GameEngine.Player.Player;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Map {
 
-    private GameWindow gw;
     public static final int MAP_SIZE = 32;
+    private GameWindow gw;
     private int[][] map;
-    private ArrayList<Entity> entities = new ArrayList<>();
+    private boolean busy = false;
+    private List<Entity> entities = new ArrayList<>();
 
     public Map(GameWindow gw) {
         this.gw = gw;
@@ -50,11 +50,6 @@ public class Map {
         }
     }
 
-    public Box getBoxID(int x, int y) {
-        Box b = Box.boxArr[map[x][y]];
-        return b;
-    }
-
     public void render(Graphics g) {
         for (int y = 0; y < MAP_SIZE; y++) {
             for (int x = 0; x < MAP_SIZE; x++) {
@@ -79,25 +74,34 @@ public class Map {
         int index = 0;
         for (Entity e : getEntityList()) {
             if (((Player) e).getUsername().equals(username)) {
-                break;
+                return index;
             }
             index++;
         }
-        return index;
+        return index - 1;
     }
 
-    public synchronized ArrayList<Entity> getEntityList() {
+    public synchronized List<Entity> getEntityList() {
         return this.entities;
     }
 
     public synchronized void addEntity(Entity e) {
+        while (busy) {
+            try {
+                Thread.sleep(2);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        }
+        busy = true;
         this.getEntityList().add(e);
+        busy = false;
     }
 
     public synchronized void removeEntity(String username) {
         for (int i = 0; i < getEntityList().size(); i++) {
             Entity e = getEntityList().get(i);
-            if (((Player) e).getUsername().equals(username)) {
+            if (e instanceof Player && ((Player) e).getUsername().equals(username)) {
                 getEntityList().remove(i);
                 i--;
             }
@@ -106,6 +110,8 @@ public class Map {
 
     public synchronized void playersMove(String username, int x, int y, int currentDir, boolean isMoving) {
         int index = getPlayerByIndex(username);
+//        System.out.println("username = " + username);
+//        System.out.println("index = " + index);
         Player player = (Player) getEntityList().get(index);
         player.x = x;
         player.y = y;

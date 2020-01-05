@@ -20,9 +20,6 @@ public class MenuWindow extends JFrame {
 
     public String address, port, username;
     public boolean isServer;
-
-    public final int WIDTH = 800;
-    public final int HEIGHT = WIDTH/12 * 9;
     private ShooterClientServer thisGame;
 
     public MenuWindow(ShooterClientServer thisGame){
@@ -32,25 +29,32 @@ public class MenuWindow extends JFrame {
 
     public void init(){
         do {
+            JPanel panel = new JPanel();
+            panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
+            JLabel labelName = new JLabel("Enter Username:");
+            JLabel labelAddress = new JLabel("Enter IP Address:");
+            JLabel labelPort = new JLabel("Enter Port:");
             JTextField usernameField = new myField("username");
             JTextField addressField = new myField("localHost");
             JTextField portField = new myField("8888");
             JCheckBox serverCheck = new JCheckBox("Server");
-            JPanel panel = new JPanel();
-            panel.setSize(new Dimension(800,600));
+            panel.add(labelName);
             panel.add(usernameField);
+            panel.add(labelAddress);
             panel.add(addressField);
+            panel.add(labelPort);
             panel.add(portField);
             panel.add(serverCheck);
+            JOptionPane optionPane= new JOptionPane("message", JOptionPane.OK_CANCEL_OPTION);
             int result = JOptionPane.showConfirmDialog(null, panel,
-                    "ShooterClientServer", JOptionPane.OK_CANCEL_OPTION);
+                    "ShooterClientServer", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
             if (result == JOptionPane.OK_OPTION) {
                 this.username = usernameField.getText();
                 this.address = addressField.getText();
                 this.port = portField.getText();
                 this.isServer = serverCheck.isSelected();
             }
-            else if(result == JOptionPane.CANCEL_OPTION){
+            else {
                 System.exit(0);
             }
         }while (!validateFields(this.username,this.address,this.port));

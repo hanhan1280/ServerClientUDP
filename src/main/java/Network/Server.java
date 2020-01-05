@@ -10,9 +10,11 @@ import GameEngine.Player.Player;
 import Graphics.Spritesheet;
 import Network.Packets.*;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author hanan
@@ -21,14 +23,15 @@ public class Server implements Runnable {
 
     GameWindow gw;
     private DatagramSocket socket;
-    private ArrayList<Player> playersOn = new ArrayList<>();
+    private List<Player> playersOn = new ArrayList<>();
 
     public Server(GameWindow gw, int port) {
         this.gw = gw;
         try {
             this.socket = new DatagramSocket(port);
         } catch (SocketException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Server already started here.");
+            System.exit(-1);
         }
     }
 
@@ -38,16 +41,20 @@ public class Server implements Runnable {
         int packetType = Integer.parseInt(dataReceived[0]);
         Packet packet = null;
         switch (packetType) {
-            case Packet.LOGIN_PACKET:
-                packet = new LoginPacket(data);
+            default:
+                break;
+            case Packet.CONNECT_PACKET:
+                packet = new ConnectPacket(data);
                 System.out.println("[" + iNetAddress.getHostAddress() + ":" + port + "] "
-                        + ((LoginPacket) packet).getUsername() + " has connected...");
+                        + ((ConnectPacket) packet).getUsername() + " has connected...");
                 Player instance = new Player(new Spritesheet("testSprint.png", 4, 6), gw, 16,16,iNetAddress, port);
-                instance.setUsername(((LoginPacket) packet).getUsername());
-                loginPacketMethod(instance, (LoginPacket) packet);
+                instance.setUsername(((ConnectPacket) packet).getUsername());
+                connectPacketMethod(instance, (ConnectPacket) packet);
                 break;
             case Packet.DISCONNECT_PACKET:
                 packet = new DisconnectPacket(data);
+                System.out.println("[" + iNetAddress.getHostAddress() + ":" + port + "] "
+                        + ((DisconnectPacket) packet).getUsername() + " has disconnected...");
                 disconnectPacketMethod((DisconnectPacket) packet);
                 break;
             case Packet.GAME_PACKET:
@@ -61,20 +68,26 @@ public class Server implements Runnable {
         }
     }
 
-    public void loginPacketMethod(Player p, LoginPacket packet) {
+    public void connectPacketMethod(Player p, ConnectPacket packet) {
         boolean isConnected = false;
         for (Player player : playersOn) {
             if (p.getUsername().equals(player.getUsername())) {
-                if (player.inetAddress == null) {
-                    player.inetAddress = p.inetAddress;
+                player.playerCount++;
+                if(player.playerCount >1){
+                    isConnected = false;
+                    p.setUsername(player.playerCount + "." + player.getUsername());
+                }else{
+                    isConnected = true;
+                    if (player.port == -1) {
+                        player.port = p.port;
+                    }
+                    if (player.inetAddress == null) {
+                        player.inetAddress = p.inetAddress;
+                    }
                 }
-                if (player.port == -1) {
-                    player.port = p.port;
-                }
-                isConnected = true;
             } else {
                 sendData(packet.getData(), player.inetAddress, player.port);
-                packet = new LoginPacket(player.getUsername(), player.x, player.y);
+                packet = new ConnectPacket(player.getUsername(), player.x, player.y);
                 sendData(packet.getData(), p.inetAddress, p.port);
             }
         }

@@ -6,9 +6,12 @@ import GameEngine.MainListener;
 import Graphics.*;
 import Map.Camera;
 import Network.Packets.AttackPacket;
+import Network.Packets.DisconnectPacket;
 import Network.Packets.GamePacket;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 import java.net.InetAddress;
 
 public class Player extends Entity {
@@ -18,8 +21,9 @@ public class Player extends Entity {
     private Spritesheet healthSheet;
     private MainListener input;
     public InetAddress inetAddress;
+    public int playerCount = 0;
     public int port;
-    private boolean isHit;
+    private boolean isHit, disconnected;
     private GameWindow gw;
     private Camera camera;
 
@@ -52,8 +56,21 @@ public class Player extends Entity {
         super.update();
         if (camera != null) {
             camera.entityMove(this);
+            if(health <=0){
+                JOptionPane.showMessageDialog(null, "GAMEOVER");
+                if(!gw.isServer){
+                    gw.dispatchEvent(new WindowEvent(gw, WindowEvent.WINDOW_CLOSING));
+                }
+                else{
+                    disconnected = true;
+                    DisconnectPacket packet = new DisconnectPacket(this.username);
+                    packet.writeData(gw.client);
+                }
+                gw.stop();
+            }
         }
         move();
+        attack = false;
         removeBullets();
         isHit = getCollision();
         if (isHit) {
@@ -83,9 +100,6 @@ public class Player extends Entity {
                 if (input.attack) {
                     attack = true;
                     AttackPacket packet = new AttackPacket(this.username, true);
-                    packet.writeData(GameWindow.gameWindow.client);
-                } else {
-                    AttackPacket packet = new AttackPacket(this.username, false);
                     packet.writeData(GameWindow.gameWindow.client);
                 }
                 if (input.up) {
@@ -179,10 +193,11 @@ public class Player extends Entity {
         }
     }
 
+    public boolean isDisconnected(){return this.disconnected;}
+
     private void loseHealth() {
         this.health -= Bullet.DAMAGE;
     }
-
 
     public int getHealth() {
         return health;

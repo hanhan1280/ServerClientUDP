@@ -5,7 +5,7 @@ import Network.Server;
 
 public abstract class Packet {
 
-    public static final int LOGIN_PACKET = 00, DISCONNECT_PACKET = 01, GAME_PACKET = 02, ATTACK_PACKET = 03;
+    public static final int CONNECT_PACKET = 00, DISCONNECT_PACKET = 01, GAME_PACKET = 02, ATTACK_PACKET = 03;
     protected byte id;
 
     public Packet(int id) {

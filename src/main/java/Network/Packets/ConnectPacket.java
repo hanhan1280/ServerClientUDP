@@ -4,12 +4,12 @@ import Network.Client;
 import Network.Packets.Packet;
 import Network.Server;
 
-public class LoginPacket extends Packet {
+public class ConnectPacket extends Packet {
 
     private String username = null;
     private int xPos,yPos;
 
-    public LoginPacket(byte[] data) {
+    public ConnectPacket(byte[] data) {
         super(00);
         String[] dataMessage = new String(data).trim().split("#");
         this.username = dataMessage[1];
@@ -17,7 +17,7 @@ public class LoginPacket extends Packet {
         this.yPos = Integer.parseInt(dataMessage[3]);
     }
 
-    public LoginPacket(String username, int xPos, int yPos) {
+    public ConnectPacket(String username, int xPos, int yPos) {
         super(00);
         this.xPos = xPos;
         this.yPos = yPos;
