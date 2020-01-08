@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class Server implements Runnable {
 
-    GameWindow gw;
+    private GameWindow gw;
     private DatagramSocket socket;
     private List<Player> playersOn = new ArrayList<>();
 
@@ -35,7 +35,7 @@ public class Server implements Runnable {
         }
     }
 
-    public void communicate(byte[] data, InetAddress iNetAddress, int port) {
+    private void communicate(byte[] data, InetAddress iNetAddress, int port) {
         String message = new String(data).trim();
         String[] dataReceived = message.split("#");
         int packetType = Integer.parseInt(dataReceived[0]);
@@ -74,9 +74,8 @@ public class Server implements Runnable {
             if (p.getUsername().equals(player.getUsername())) {
                 player.playerCount++;
                 if(player.playerCount >1){
-                    isConnected = false;
                     p.setUsername(player.playerCount + "." + player.getUsername());
-                }else{
+                }
                     isConnected = true;
                     if (player.port == -1) {
                         player.port = p.port;
@@ -84,7 +83,7 @@ public class Server implements Runnable {
                     if (player.inetAddress == null) {
                         player.inetAddress = p.inetAddress;
                     }
-                }
+
             } else {
                 sendData(packet.getData(), player.inetAddress, player.port);
                 packet = new ConnectPacket(player.getUsername(), player.x, player.y);
@@ -116,7 +115,7 @@ public class Server implements Runnable {
         packet.writeData(this);
     }
 
-    public void sendData(byte[] data, InetAddress inetAddress, int port) {
+    private void sendData(byte[] data, InetAddress inetAddress, int port) {
         DatagramPacket packet = new DatagramPacket(data, data.length, inetAddress, port);
         try {
             socket.send(packet);
@@ -131,7 +130,7 @@ public class Server implements Runnable {
         }
     }
 
-    public int getPlayerByIndex(String username) {
+    private int getPlayerByIndex(String username) {
         int index = 0;
         for (Player p : playersOn) {
             if (p.getUsername().equals(username)) {

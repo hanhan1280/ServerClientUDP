@@ -7,13 +7,15 @@ import java.awt.*;
 
 public class Bullet {
 
-    public static Spritesheet sheet = new Spritesheet("fireballSheet.png", 4, 3);
-    public static final int DAMAGE = 25;
-    public final int MAX_DISTANCE = 10;
-    Animation ani;
+    static final int DAMAGE = 25;
+
+    private static Spritesheet sheet = new Spritesheet("fireballSheet.png", 4, 3);
+    private final int DOWN = 0, LEFT = 1, UP = 2, RIGHT = 3;
+    private Animation ani;
+
+    final int MAX_DISTANCE = 10;
     int initX, initY;
     int x, y, xPos, yPos, currentDir, prevDir;
-    final int DOWN = 0, LEFT = 1, UP = 2, RIGHT = 3;
 
     public Bullet(int x, int y, int currentDir) {
         this.ani = new Animation();

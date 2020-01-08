@@ -5,9 +5,9 @@ import java.awt.image.BufferedImage;
 
 public class Spritesheet {
 
-    public Sprite sprite;
-    public Sprite[][] spriteArray;
+    private Sprite sprite;
     public int tileX, tileY;
+    public Sprite[][] spriteArray;
     public int spriteW, spriteH;
 
     public Spritesheet(String path, int tileX, int tileY) {
@@ -29,7 +29,7 @@ public class Spritesheet {
         return sprite;
     }
 
-    public void getSpriteArray() {
+    private void getSpriteArray() {
         spriteArray = new Sprite[tileX][tileY];
         for (int x = 0; x < tileX; x++) {
             for (int y = 0; y < tileY; y++) {

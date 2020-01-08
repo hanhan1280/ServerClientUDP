@@ -6,11 +6,11 @@ public class Sprite {
 
     public BufferedImage image;
 
-    public Sprite(BufferedImage image){
+    Sprite(BufferedImage image){
         this.image = image;
     }
 
-    public Sprite getSprite(int x, int y, int spriteW, int spriteH){
+    Sprite getSprite(int x, int y, int spriteW, int spriteH){
         return new Sprite(image.getSubimage(x, y, spriteW, spriteH));
     }
 

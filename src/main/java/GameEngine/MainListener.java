@@ -7,20 +7,8 @@ import java.awt.event.*;
 public class MainListener implements KeyListener{
 
     public boolean right, left, up, down, attack;
-    private GameWindow gw;
-    private ShooterClientServer thisGame;
-    private Player player;
-    private int[][] map;
 
-    public MainListener(GameWindow gw, ShooterClientServer thisGame){
-        this.gw = gw;
-        this.thisGame = thisGame;
-        right = false;
-        left = false;
-        up = false;
-        down = false;
-        attack = false;
-    }
+    public MainListener(){}
 
     @Override
     public void keyTyped(KeyEvent e) {}
@@ -36,7 +24,7 @@ public class MainListener implements KeyListener{
     }
 
 
-    public void keyEvents(int keyCode, boolean keyPressed){
+    private void keyEvents(int keyCode, boolean keyPressed){
         if(keyCode == KeyEvent.VK_W){
             up = keyPressed;
         }

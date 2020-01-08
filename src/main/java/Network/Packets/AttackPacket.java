@@ -6,7 +6,6 @@ import Network.Server;
 
 public class AttackPacket extends Packet {
 
-
     private boolean isAttack;
     private String username;
 

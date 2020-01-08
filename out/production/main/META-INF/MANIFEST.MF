@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Class-Path: ComSciCPT12\out\artifacts\main_jar
+Main-Class: GameEngine.ShooterClientServer
+

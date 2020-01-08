@@ -9,6 +9,7 @@ import Network.Client;
 import Network.Packets.DisconnectPacket;
 import Network.Packets.ConnectPacket;
 import Network.Server;
+import menu.MenuWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,22 +20,22 @@ import java.awt.image.BufferedImage;
 
 public class GameWindow extends JFrame implements Runnable {
 
-    private Thread clientThread, serverThread, gameThread;
     public static GameWindow gameWindow;
     public final int WIDTH = 800;
     public final int HEIGHT = WIDTH / 12 * 9;
     public Camera camera;
-    public Player player;
-    public MainListener mainListener;
     public Map map;
-    public Server server;
     public Client client;
-    ShooterClientServer thisGame;
+    public boolean isServer;
+    private Player player;
+    private MainListener mainListener;
+    private Server server;
+    private ShooterClientServer thisGame = ShooterClientServer.thisGame;
     private String username, address;
     private int port;
     private BufferedImage image;
     private boolean running;
-    public boolean isServer;
+    private Thread clientThread, serverThread, gameThread;
 
     public GameWindow(ShooterClientServer thisGame, String username, String address, int port, boolean isServer) {
         this.thisGame = thisGame;
@@ -45,13 +46,10 @@ public class GameWindow extends JFrame implements Runnable {
         this.isServer = isServer;
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         setTitle("ShooterClientServer");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setSize(WIDTH, HEIGHT);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
         map = new Map(this);
-        Fonts font = new Fonts(new Spritesheet("fontsheet.png", 15, 5));
-        mainListener = new MainListener(this, thisGame);
+        mainListener = new MainListener();
         camera = new Camera(this, 0, 0);
     }
 
@@ -66,13 +64,19 @@ public class GameWindow extends JFrame implements Runnable {
                     DisconnectPacket packet = new DisconnectPacket(player.getUsername());
                     packet.writeData(client);
                 }
+                new MenuWindow(thisGame);
             }
         });
+        setPreferredSize(new Dimension(WIDTH,HEIGHT));
+        setMaximumSize(new Dimension(WIDTH,HEIGHT));
+        setMinimumSize(new Dimension(WIDTH,HEIGHT));
+        pack();
+        setLocationRelativeTo(null);
         setVisible(true);
         start();
     }
 
-    public void setUpThread() {
+    private void setUpThread() {
         map.addEntity(player);
         ConnectPacket packet = new ConnectPacket(player.getUsername(), player.x, player.y);
         if (server != null) {
@@ -104,7 +108,7 @@ public class GameWindow extends JFrame implements Runnable {
         }
     }
 
-    public void render() {
+    private void render() {
         BufferStrategy bs = getBufferStrategy();
         if (bs == null) {
             createBufferStrategy(3);

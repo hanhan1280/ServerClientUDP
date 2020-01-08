@@ -8,6 +8,7 @@ import Map.Camera;
 import Network.Packets.AttackPacket;
 import Network.Packets.DisconnectPacket;
 import Network.Packets.GamePacket;
+import menu.MenuWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,12 +21,13 @@ public class Player extends Entity {
     private String username;
     private Spritesheet healthSheet;
     private MainListener input;
-    public InetAddress inetAddress;
-    public int playerCount = 0;
-    public int port;
     private boolean isHit, disconnected;
     private GameWindow gw;
     private Camera camera;
+
+    public InetAddress inetAddress;
+    public int playerCount = 0;
+    public int port;
 
     public Player(Spritesheet sprite, GameWindow gw, int x, int y, InetAddress inetAddress, int port, Camera c, MainListener mainListener) {
         super(sprite);
@@ -60,13 +62,13 @@ public class Player extends Entity {
                 JOptionPane.showMessageDialog(null, "GAMEOVER");
                 if(!gw.isServer){
                     gw.dispatchEvent(new WindowEvent(gw, WindowEvent.WINDOW_CLOSING));
+                    disconnected = true;
                 }
                 else{
                     disconnected = true;
                     DisconnectPacket packet = new DisconnectPacket(this.username);
                     packet.writeData(gw.client);
                 }
-                gw.stop();
             }
         }
         move();

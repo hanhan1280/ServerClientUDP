@@ -20,8 +20,8 @@ import java.net.*;
 public class Client implements Runnable {
     private InetAddress inetAddress;
     private DatagramSocket socket;
-    GameWindow gw;
-    int port;
+    private GameWindow gw;
+    private int port;
 
     public Client(GameWindow gw, String address, int port) {
         this.gw = gw;
@@ -36,11 +36,11 @@ public class Client implements Runnable {
         }
     }
 
-    public void communicate(byte[] data, InetAddress inetAddress, int port) {
+    private void communicate(byte[] data, InetAddress inetAddress, int port) {
         String message = new String(data).trim();
         String[] dataReceived = message.split("#");
         int packetType = Integer.parseInt(dataReceived[0]);
-        Packet packet = null;
+        Packet packet;
         switch (packetType) {
             default:
                 break;

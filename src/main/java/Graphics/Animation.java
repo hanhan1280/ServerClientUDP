@@ -2,16 +2,11 @@ package Graphics;
 
 public class Animation {
 
-    public int currentFrame;
-    public int count;
     public int delay;
-    Sprite[] frames;
+    private Sprite[] frames;
+    private int currentFrame,count;
 
     public Animation() {
-    }
-
-    public Animation(Sprite[] frames) {
-        setFrames(frames);
     }
 
     public void setFrames(Sprite[] frames) {

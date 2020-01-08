@@ -9,14 +9,15 @@ import java.util.ArrayList;
 public abstract class Entity {
 
     public int xPos, yPos;
-    protected final int DOWN = 0, LEFT = 1, UP = 2, RIGHT = 3, FIRING_DELAY = 500;
     public int x, y; //x and y indexes on map
-    protected long firingTime;
-    protected Animation ani;
     public boolean attack, isMoving;
     public int currentDir, prevDir;
     public ArrayList<Bullet> bullets = new ArrayList<>();
+
     protected int w, h;
+    protected long firingTime;
+    protected Animation ani;
+    protected final int DOWN = 0, LEFT = 1, UP = 2, RIGHT = 3, FIRING_DELAY = 500;
 
     private Spritesheet sprite;
 
