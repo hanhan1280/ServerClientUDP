@@ -9,4 +9,4 @@ Fully Custom 2d Game Engine using only native Java Libraries
 ## UDP Protocol ##
   * Uses sockets to send *Packets* of byte data between the ***Server*** and the ***Client***
   
-[![Watch the video](https://img.https://youtu.be/Cu461UKYmCY/hqdefault.jpg)](https://youtu.be/Cu461UKYmCY)
+[![Watch the video](https://img.youtube.com/vi/Cu461UKYmCY/0.jpg)](https://www.youtube.com/watch?v=Cu461UKYmCY)
